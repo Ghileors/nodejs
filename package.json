@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-homework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --es-module-specifier-resolution=node ./src/index.js",
+    "dev": "nodemon --es-module-specifier-resolution=node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ghileors/nodejs-homework.git"
+  },
+  "keywords": [],
+  "author": "Polina Slyusareva <ghileors@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ghileors/nodejs-homework/issues"
+  },
+  "homepage": "https://github.com/Ghileors/nodejs-homework#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "uuidv4": "^6.2.5",
+    "yargs": "^16.1.0"
+  }
+}
