@@ -1,32 +1,45 @@
-# nodejs-homework
-goit nodejs homework-01
+### @ GET /api/contacts
 
-[Link to the task](https://github.com/goitacademy/nodejs-homework/blob/master/homework-01/README.md)
+- Ничего не получает
+- Вызывает функцию `listContacts` для работы с json-файлом contacts.json
+- Возвращает массив всех контактов в json-формате со статусом 200
 
-# Получаем и выводим весь список контактов в виде таблицы (console.table)
+### @ GET /api/contacts/:contactId
 
-```sh
-node index.js --action="list"
-```
-![print scrin](./assets/action-list.png)
+- Не получает body
+- Получает параметр `contactId`
+- Вызывает функцию getById для работы с json-файлом contacts.json
+- Если такой id есть, возвращает обьект контакта в json-формате со статусом 200
+- Если такого id нет, возвращает json с ключом `"message": "Not found"` и
+  статусом 404
 
-# Получаем контакт по id
+### @ POST /api/contacts
 
-```sh
-node index.js --action="get" --id=5
-```
-![print scrin](./assets/action-get.png)
+- Получает body в формате `{name, email, phone}`
+- Если в body нет каких-то обязательных полей, возарщает json с ключом
+  `{"message": "missing required name field"}` и статусом 400
+- Если с body все хорошо, добавляет уникальный идентификатор в обьект контакта
+- Вызывает функцию `addContact()` для сохранения контакта в файле contacts.json
+- По результату работы функции возвращает обьект с добавленным id
+  `{id, name, email, phone}` и статусом 201
 
-# Добавялем контакт
+### @ DELETE /api/contacts/:contactId
 
-```sh
-node index.js --action="add" --name="Mango" --email="mango@gmail.com" --phone="322-22-22"
-```
-![print scrin](./assets/action-add.png)
+- Не получает body
+- Получает параметр `contactId`
+- Вызывает функцию `removeContact` для работы с json-файлом contacts.json
+- Если такой id есть, возвращает json формата `{"message": "contact deleted"}` и
+  статусом 200
+- Если такого id нет, возвращает json с ключом `"message": "Not found"` и
+  статусом 404
 
-# Удаляем контакт
+### @ PATCH /api/contacts/:contactId
 
-```sh
-node index.js --action="remove" --id=3
-```
-![print scrin](./assets/action-remove.png)
+- Получает body в json-формате c обновлением любых полей `name, email и phone`
+- Если body нет, возарщает json с ключом `{"message": "missing fields"}` и
+  статусом 400
+- Если с body все хорошо, вызывает функцию `updateContact(id)` (напиши ее) для
+  обновления контакта в файле contacts.json
+- По результату работы функции возвращает обновленный обьект контакта и
+  статусом 200. В противном случае, возвращает json с ключом
+  `"message": "Not found"` и статусом 404
