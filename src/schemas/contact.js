@@ -14,6 +14,7 @@ const contactSchema = new Schema(
       type: String,
       required: [true, 'Password contact is required'],
     },
+    owner: { type: mongoose.SchemaTypes.ObjectId, ref: 'user' },
     token: { type: String },
   },
   { versionKey: false, timestamps: true },

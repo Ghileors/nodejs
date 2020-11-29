@@ -15,8 +15,8 @@ class ContactsRepository {
     return result;
   }
 
-  async addContact(body) {
-    const result = await this.model.create(body);
+  async addContact(body, userId) {
+    const result = await this.model.create({ ...body, owner: userId });
     return result;
   }
 
