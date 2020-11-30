@@ -43,11 +43,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// userSchema.path('email').validate(function (value) {
-//    const re = /\S+@\S+\.\S+/;
-//    return re.test(String(value).toLocaleLowerCase());
-// })
-
 userSchema.methods.validatePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };

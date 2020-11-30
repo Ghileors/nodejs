@@ -57,7 +57,7 @@ const login = async (req, res, next) => {
 const logout = async (req, res, next) => {
   const id = req.user.id;
 
-  await serviceAuth.login(id);
+  await serviceAuth.logout(id);
 
   return res.status(HttpCode.NO_CONTENT).json({
     status: 'success',

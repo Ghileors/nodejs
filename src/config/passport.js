@@ -12,17 +12,8 @@ const params = {
 passport.use(
   new Strategy(params, async (payload, done) => {
     try {
-      console.log(
-        '🚀 ~ file: passport.js ~ line 18 ~ newStrategy ~ payload',
-        payload,
-      );
-
       const service = new UsersService();
       const user = await service.findById(payload.id);
-      console.log(
-        '🚀 ~ file: passport.js ~ line 23 ~ newStrategy ~ user',
-        user,
-      );
 
       if (!user) {
         return done(new Error('User not found'));

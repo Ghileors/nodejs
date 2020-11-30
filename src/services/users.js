@@ -6,6 +6,7 @@ class UserService {
       users: new UsersRepository(),
     };
   }
+
   async create(body) {
     const data = await this.repositories.users.create(body);
     return data;

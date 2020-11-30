@@ -1,11 +1,13 @@
 const express = require('express');
 const controllerUsers = require('../../controllers/users');
 const guard = require('../../helpers/guard');
+const { createAccountLimiter } = require('../../helpers/reate-limit');
 
 const router = express.Router();
 
 router
-  .post('/auth/register', controllerUsers.reg)
+  // .get('/users/current')
+  .post('/auth/register', createAccountLimiter, controllerUsers.reg)
   .post('/auth/login', controllerUsers.login)
   .post('/auth/logout', guard, controllerUsers.logout);
 
