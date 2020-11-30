@@ -7,31 +7,34 @@ class ContactsService {
     };
   }
 
-  listContacts() {
-    const data = this.repositories.contacts.listContacts();
+  async listContacts() {
+    const data = await this.repositories.contacts.listContacts();
     return data;
   }
 
-  getById({ contactId }) {
-    const data = this.repositories.contacts.getById(contactId);
-
-    return data;
-  }
-
-  addContact(body) {
-    const data = this.repositories.contacts.addContact(body);
+  async getById({ contactId }) {
+    const data = await this.repositories.contacts.getById(contactId);
 
     return data;
   }
 
-  updateContact({ contactId }, body) {
-    const data = this.repositories.contacts.updateContact(contactId, body);
+  async addContact(body) {
+    const data = await this.repositories.contacts.addContact(body);
 
     return data;
   }
 
-  removeContact({ contactId }) {
-    const data = this.repositories.contacts.removeContact(contactId);
+  async updateContact({ contactId }, body) {
+    const data = await this.repositories.contacts.updateContact(
+      contactId,
+      body,
+    );
+
+    return data;
+  }
+
+  async removeContact({ contactId }) {
+    const data = await this.repositories.contacts.removeContact(contactId);
 
     return data;
   }
