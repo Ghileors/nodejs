@@ -42,7 +42,7 @@ const login = async (req, res, next) => {
       return res.status(HttpCode.OK).json({
         status: 'success',
         code: HttpCode.OK,
-        data: { token },
+        data: { token, user: { email } },
       });
     }
     next({
@@ -54,6 +54,17 @@ const login = async (req, res, next) => {
   }
 };
 
+const current = async (req, res, next) => {
+  const { id, email, subscription } = req.user;
+
+  await serviceUser.current(id);
+
+  return res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: { email, subscription },
+  });
+};
 const logout = async (req, res, next) => {
   const id = req.user.id;
 
@@ -69,4 +80,5 @@ module.exports = {
   reg,
   login,
   logout,
+  current,
 };

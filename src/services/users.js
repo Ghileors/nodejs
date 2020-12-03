@@ -21,6 +21,11 @@ class UserService {
     const data = await this.repositories.users.findById(id);
     return data;
   }
+
+  async current(id) {
+    const data = await this.repositories.users.findById(id);
+    return data;
+  }
 }
 
 module.exports = UserService;
