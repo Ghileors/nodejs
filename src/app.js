@@ -1,7 +1,7 @@
 const express = require('express');
+const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const cors = require('cors');
 const { ErrorHandler } = require('./helpers/error');
 const { HttpCode } = require('./helpers/constants');
 const { apiLimit, jsonLimit } = require('./config/rate-limit.json');
@@ -14,7 +14,6 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: jsonLimit }));
-app.set('trust proxy', 1);
 
 app.use(
   '/api/',
@@ -31,6 +30,7 @@ app.use(
     },
   }),
 );
+
 app.use('/api/contacts', routerContacts);
 app.use('/api/users', routerUsers);
 
