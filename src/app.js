@@ -1,13 +1,38 @@
 const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const cors = require('cors');
+const { ErrorHandler } = require('./helpers/error');
 const { HttpCode } = require('./helpers/constants');
-const routerContacts = require('./api/contacts/router');
+const { apiLimit, jsonLimit } = require('./config/rate-limit.json');
+
+const routerContacts = require('./api/contacts/contacts.router');
+const routerUsers = require('./api/users/users.router');
 
 const app = express();
 
+app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: jsonLimit }));
+app.set('trust proxy', 1);
+
+app.use(
+  '/api/',
+  rateLimit({
+    windowMs: apiLimit.windowMs,
+    max: apiLimit.max,
+    handler: (req, res, next) => {
+      next(
+        new ErrorHandler(
+          HttpCode.BAD_REQUEST,
+          'Too many requests, please try again later.',
+        ),
+      );
+    },
+  }),
+);
 app.use('/api/contacts', routerContacts);
+app.use('/api/users', routerUsers);
 
 app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({

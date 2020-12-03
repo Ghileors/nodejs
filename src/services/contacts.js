@@ -7,25 +7,27 @@ class ContactsService {
     };
   }
 
-  async listContacts() {
-    const data = await this.repositories.contacts.listContacts();
-    return data;
+  async listContacts(userId, query) {
+    const data = await this.repositories.contacts.listContacts(userId, query);
+    const { docs: contacts, totalDocs: total, limit, offset } = data;
+    return { contacts, total, limit, offset };
   }
 
-  async getById({ contactId }) {
-    const data = await this.repositories.contacts.getById(contactId);
-
-    return data;
-  }
-
-  async addContact(body) {
-    const data = await this.repositories.contacts.addContact(body);
+  async getById(userId, { contactId }) {
+    const data = await this.repositories.contacts.getById(userId, contactId);
 
     return data;
   }
 
-  async updateContact({ contactId }, body) {
+  async addContact(userId, body) {
+    const data = await this.repositories.contacts.addContact(userId, body);
+
+    return data;
+  }
+
+  async updateContact(userId, { contactId }, body) {
     const data = await this.repositories.contacts.updateContact(
+      userId,
       contactId,
       body,
     );
@@ -33,8 +35,11 @@ class ContactsService {
     return data;
   }
 
-  async removeContact({ contactId }) {
-    const data = await this.repositories.contacts.removeContact(contactId);
+  async removeContact(userId, { contactId }) {
+    const data = await this.repositories.contacts.removeContact(
+      userId,
+      contactId,
+    );
 
     return data;
   }

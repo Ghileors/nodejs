@@ -5,33 +5,54 @@ class ContactsRepository {
     this.model = Contact;
   }
 
-  async listContacts() {
-    const result = await this.model.find({});
+  async listContacts(
+    userId,
+    { limit = 5, offset = 0, sortBy, sortByDesc, filter },
+  ) {
+    const result = await this.model.paginate(
+      { owner: userId },
+      {
+        limit,
+        offset,
+        sort: {
+          ...(sortBy ? { [`${sortBy}`]: 1 } : {}),
+          ...(sortByDesc ? { [`${sortByDesc}`]: -1 } : {}),
+        },
+        select: filter ? filter.split('|').join(' ') : '',
+        populate: { path: 'owner', select: 'email -_id' },
+      },
+    );
     return result;
   }
 
-  async getById(id) {
-    const result = await this.model.findOne({ _id: id });
+  async getById(userId, id) {
+    const result = await this.model
+      .findOne({ _id: id, owner: userId })
+      .populate({
+        path: 'owner',
+        select: 'email -_id',
+      });
     return result;
   }
 
-  async addContact(body) {
-    const result = await this.model.create(body);
+  async addContact(userId, body) {
+    const result = await this.model.create({ ...body, owner: userId });
     return result;
   }
 
-  async updateContact(id, body) {
+  async updateContact(userId, id, body) {
     const result = await this.model.findByIdAndUpdate(
-      { _id: id },
+      { _id: id, owner: userId },
       { ...body },
       { new: true },
     );
     return result;
   }
 
-  async removeContact(id) {
+  async removeContact(userId, id) {
     const result = await this.model.findByIdAndDelete({
       _id: id,
+      owner: userId,
     });
     return result;
   }
