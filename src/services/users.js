@@ -2,7 +2,7 @@ const { UsersRepository } = require('../repository');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs/promises');
 require('dotenv').config();
-// const { ErrorHandler } = require('../helpers/error');
+const { ErrorHandler } = require('../helpers/error');
 class UserService {
   constructor() {
     this.cloudinary = cloudinary;
@@ -21,8 +21,8 @@ class UserService {
     return data;
   }
 
-  async getCurrent(email) {
-    const data = await this.repositories.users.getCurrent(email);
+  async current(id) {
+    const data = await this.repositories.users.findById(id);
     return data;
   }
 
@@ -62,7 +62,7 @@ class UserService {
       this.cloudinary.uploader.upload(
         pathFile,
         {
-          folder: 'Avatars',
+          folder: 'avatars',
           transformation: {
             width: 250,
             crop: 'fill',

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -10,6 +11,8 @@ const routerContacts = require('./api/contacts/contacts.router');
 const routerUsers = require('./api/users/users.router');
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, '../', 'public')));
 
 app.use(helmet());
 app.use(cors());
@@ -38,7 +41,7 @@ app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({
     status: 'error',
     code: HttpCode.NOT_FOUND,
-    message: `Use api on routes ${req.baseUrl}/api/contacts`,
+    message: `Use api on routes ${req.baseUrl}/api/`,
     data: 'Not found',
   });
 });

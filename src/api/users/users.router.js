@@ -5,13 +5,12 @@ const { createAccountLimiter } = require('../../helpers/reate-limit');
 const guard = require('../../helpers/guard');
 const upload = require('../../helpers/multer');
 
-router
-  .get('/current', guard, controllerUsers.getCurrentUser)
-  .post('/auth/register', createAccountLimiter, controllerUsers.reg)
-  .post('/auth/login', controllerUsers.login)
-  .post('/auth/logout', guard, controllerUsers.logout);
+router.get('/current', guard, controllerUsers.current);
+router.post('/auth/register', createAccountLimiter, controllerUsers.reg);
+router.post('/auth/login', controllerUsers.login);
+router.post('/auth/logout', guard, controllerUsers.logout);
 router.patch(
-  '/users/avatars',
+  '/avatars',
   guard,
   upload.single('avatar'),
   controllerUsers.avatars,

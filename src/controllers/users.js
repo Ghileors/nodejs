@@ -24,7 +24,7 @@ const reg = async (req, res, next) => {
         id: newUser.id,
         email: newUser.email,
         subscription: newUser.subscription,
-        avatar: newUser.avatar,
+        avatar: newUser.avatarURL,
       },
     });
   } catch (err) {
@@ -65,40 +65,34 @@ const logout = async (req, res, next) => {
   });
 };
 
-const getCurrentUser = async (req, res, next) => {
-  const { email } = req.body;
+const current = async (req, res, next) => {
+  const { id, email, subscription } = req.user;
 
-  try {
-    const user = await serviceUser.getCurrentUser({ email });
+  await serviceUser.current(id);
 
-    if (user) {
-      return res.status(HttpCode.OK).json({
-        status: 'success',
-        code: HttpCode.OK,
-        data: { user },
-      });
-    }
-    next({
-      status: HttpCode.UNAUTHORIZED,
-      message: 'Invalid creadentials',
-    });
-  } catch (err) {
-    next(err);
-  }
+  return res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: { email, subscription },
+  });
 };
 
 const avatars = async (req, res, next) => {
   const id = req.user.id;
   const pathFile = req.file.path;
-  const url = await serviceUser.updateAvatar(id, pathFile);
-  return res
-    .status(HttpCode.OK)
-    .json({ status: 'success', code: HttpCode.OK, avatarUrl: url });
+  try {
+    const url = await serviceUser.updateAvatar(id, pathFile);
+    return res
+      .status(HttpCode.OK)
+      .json({ status: 'success', code: HttpCode.OK, avatarUrl: url });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 module.exports = {
   reg,
-  getCurrentUser,
+  current,
   login,
   logout,
   avatars,

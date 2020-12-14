@@ -5,11 +5,6 @@ class UsersRepository {
     this.model = User;
   }
 
-  async getCurrent(email) {
-    const result = await this.model.findOne({ email });
-    return result;
-  }
-
   async findById(id) {
     const result = await this.model.findOne({ _id: id });
     return result;
@@ -23,6 +18,10 @@ class UsersRepository {
   async create(body) {
     const user = new this.model(body);
     return user.save();
+  }
+
+  async updateToken(id, token) {
+    await this.model.updateOne({ _id: id }, { token });
   }
 
   async updateAvatar(id, avatar, idCloudAvatar) {
