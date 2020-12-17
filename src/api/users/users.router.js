@@ -6,6 +6,7 @@ const guard = require('../../helpers/guard');
 const upload = require('../../helpers/multer');
 
 router.get('/current', guard, controllerUsers.current);
+router.get('/auth/verify/:verificationToken', controllerUsers.verify);
 router.post('/auth/register', createAccountLimiter, controllerUsers.reg);
 router.post('/auth/login', controllerUsers.login);
 router.post('/auth/logout', guard, controllerUsers.logout);

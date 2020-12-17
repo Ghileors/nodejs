@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcryptjs');
 const gravatar = require('gravatar');
+const { boolean } = require('joi');
 
 const SALT_FACTOR = 6;
 
@@ -39,6 +40,14 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
   },
   { versionKey: false, timestamps: true },
 );
@@ -54,7 +63,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.validatePassword = async function (password) {
+userSchema.methods.validPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
