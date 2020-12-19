@@ -3,6 +3,7 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs/promises');
 require('dotenv').config();
 const { ErrorHandler } = require('../helpers/error');
+
 class UserService {
   constructor() {
     this.cloudinary = cloudinary;

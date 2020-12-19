@@ -42,7 +42,7 @@ const login = async (req, res, next) => {
       return res.status(HttpCode.OK).json({
         status: 'success',
         code: HttpCode.OK,
-        data: { token },
+        data: { token, user: { email } },
       });
     }
     next({
@@ -54,17 +54,6 @@ const login = async (req, res, next) => {
   }
 };
 
-const logout = async (req, res, next) => {
-  const id = req.user.id;
-
-  await serviceAuth.logout(id);
-
-  return res.status(HttpCode.NO_CONTENT).json({
-    status: 'success',
-    code: HttpCode.NO_CONTENT,
-  });
-};
-
 const current = async (req, res, next) => {
   const { id, email, subscription } = req.user;
 
@@ -74,6 +63,17 @@ const current = async (req, res, next) => {
     status: 'success',
     code: HttpCode.OK,
     data: { email, subscription },
+  });
+};
+
+const logout = async (req, res, next) => {
+  const id = req.user.id;
+
+  await serviceAuth.logout(id);
+
+  return res.status(HttpCode.NO_CONTENT).json({
+    status: 'success',
+    code: HttpCode.NO_CONTENT,
   });
 };
 
