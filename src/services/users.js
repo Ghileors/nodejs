@@ -5,6 +5,7 @@ const cloudinary = require('cloudinary').v2;
 const { nanoid } = require('nanoid');
 const fs = require('fs/promises');
 require('dotenv').config();
+
 class UserService {
   constructor() {
     this.cloudinary = cloudinary;
