@@ -1,7 +1,8 @@
+const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const cors = require('cors');
 const { ErrorHandler } = require('./helpers/error');
 const { HttpCode } = require('./helpers/constants');
 const { apiLimit, jsonLimit } = require('./config/rate-limit.json');
@@ -11,10 +12,11 @@ const routerUsers = require('./api/users/users.router');
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, '../', 'public')));
+
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: jsonLimit }));
-app.set('trust proxy', 1);
 
 app.use(
   '/api/',
@@ -31,6 +33,7 @@ app.use(
     },
   }),
 );
+
 app.use('/api/contacts', routerContacts);
 app.use('/api/users', routerUsers);
 
@@ -38,7 +41,7 @@ app.use((req, res, next) => {
   res.status(HttpCode.NOT_FOUND).json({
     status: 'error',
     code: HttpCode.NOT_FOUND,
-    message: `Use api on routes ${req.baseUrl}/api/contacts`,
+    message: `Use api on routes ${req.baseUrl}/api/`,
     data: 'Not found',
   });
 });
