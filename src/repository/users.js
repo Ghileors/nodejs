@@ -15,9 +15,22 @@ class UsersRepository {
     return result;
   }
 
+  async findByField(field) {
+    const result = await this.model.findOne({ field });
+    return result;
+  }
+
   async create(body) {
     const user = new this.model(body);
     return user.save();
+  }
+
+  async getCurrentUser(id) {
+    const user = await this.model.findOne(
+      { _id: id },
+      'avatarURL email subscription',
+    );
+    return user;
   }
 
   async updateToken(id, token) {

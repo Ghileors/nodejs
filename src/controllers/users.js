@@ -32,6 +32,25 @@ const reg = async (req, res, next) => {
   }
 };
 
+const current = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await serviceUser.getCurrentUser(userId);
+    if (user) {
+      return res
+        .status(HttpCode.OK)
+        .json({ status: 'success', code: HttpCode.OK, data: { user } });
+    } else {
+      return next({
+        status: HttpCode.UNAUTHORIZED,
+        message: 'Invalid credentials',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -52,18 +71,6 @@ const login = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
-
-const current = async (req, res, next) => {
-  const { id, email, subscription } = req.user;
-
-  await serviceUser.current(id);
-
-  return res.status(HttpCode.OK).json({
-    status: 'success',
-    code: HttpCode.OK,
-    data: { email, subscription },
-  });
 };
 
 const logout = async (req, res, next) => {
@@ -90,10 +97,34 @@ const avatars = async (req, res, next) => {
   }
 };
 
+const verify = async (req, res, next) => {
+  try {
+    const result = await serviceUser.verify(req.params);
+    if (result) {
+      return res.status(HttpCode.OK).json({
+        status: 'success',
+        code: HttpCode.OK,
+        data: {
+          message: 'Verification successful',
+        },
+      });
+    } else {
+      return next({
+        status: HttpCode.BAD_REQUEST,
+        message:
+          'Your verification token is not valid. Contact the administration',
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   reg,
   current,
   login,
   logout,
   avatars,
+  verify,
 };
