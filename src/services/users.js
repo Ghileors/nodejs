@@ -13,13 +13,13 @@ class UserService {
       cloud_name: process.env.CLOUD_NAME,
       api_key: process.env.API_KEY,
       api_secret: process.env.API_SECRET,
-    });
-    (this.emailService = new EmailService()),
-      (this.repositories = {
-        users: new UsersRepository(),
-      });
-  }
-
+    });    
+    this.repositories = {
+      users: new UsersRepository(),
+    };    
+    this.emailService = new EmailService(),
+  }  
+    
   #uploadCloud = pathFile => {
     return new Promise((resolve, reject) => {
       this.cloudinary.uploader.upload(
